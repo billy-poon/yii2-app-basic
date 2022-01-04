@@ -6,7 +6,7 @@ $db = require __DIR__ . '/db.php';
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', 'app\bootstraps\SessionNegotiator'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -15,6 +15,18 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ],
+        ],
+        'response' => [
+            'formatters' => [
+              \yii\web\Response::FORMAT_JSON => [
+                'class' => 'yii\web\JsonResponseFormatter',
+                'prettyPrint' => YII_ENV_DEV || YII_DEBUG,
+                'encodeOptions' => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
+              ],
+            ],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -43,19 +55,24 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
+        //*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-            ],
+            'rules' => array_merge(
+                require __DIR__ . '/../modules/v1/routes.php',
+                []
+            ),
         ],
-        */
+        //*/
     ],
     'params' => $params,
+    'modules' => [
+        'v1' => 'app\modules\v1\Module',
+    ],
 ];
 
-if (YII_ENV_DEV) {
+if (YII_ENV_DEV || YII_DEBUG) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
