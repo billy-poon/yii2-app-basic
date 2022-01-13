@@ -25,7 +25,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
 
   public function extraFields()
   {
-    return ['hidden_fields' => 'hiddenFields'];
+    return ['hidden_attributes' => 'hiddenAttributes'];
   }
 
   public static function hiddenFields()
@@ -33,7 +33,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     return ['create_by', 'create_at', 'update_by', 'update_at'];
   }
 
-  public function getHiddenFields()
+  public function getHiddenAttributes()
   {
     return $this->getAttributes(static::hiddenFields());
   }
@@ -80,6 +80,13 @@ class ActiveRecord extends \yii\db\ActiveRecord
     }
   }
 
+  /**
+   * `like` query on string fields
+   * @param string $q the query keyword
+   * @param \yii\db\Query $query the existing query or null
+   * @return \yii\db\Query
+   * @
+   */
   public static function query($q, $query = null)
   {
     static $supportedTypes = ['char', 'string', 'text'];

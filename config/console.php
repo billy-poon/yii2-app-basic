@@ -14,6 +14,9 @@ $config = [
         '@tests' => '@app/tests',
     ],
     'components' => [
+        'request' => [
+            'as webRequest' => 'app\behaviors\console\WebRequestBehavior',
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],

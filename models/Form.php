@@ -2,6 +2,10 @@
 
 namespace app\models;
 
+/**
+ * @property mixed $result
+ * @property-read \yii\web\IdentityInterface $identity
+ */
 class Form extends \yii\base\Model
 {
   use ModelTrait;
@@ -23,17 +27,17 @@ class Form extends \yii\base\Model
     return array_merge($prepend, $extra, $append);
   }
 
-  public function requiredFields()
+  protected function requiredFields()
   {
     return [];
   }
 
-  public function safeFields()
+  protected function safeFields()
   {
     return $this->attributes();
   }
 
-  public function extraRules()
+  protected function extraRules()
   {
     return [];
   }
